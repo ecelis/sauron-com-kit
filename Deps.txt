@@ -1,0 +1,1 @@
+sudo apt-get install liblinphone-dev libasound2 libasound2-dev liblinphone3 libmediastreamer0 libmediastreamer-dev libortp8 libortp-dev libosip2-4 libosip2-dev libsamplerate0 libsamplerate0-dev libspeex1 libspeex-dev
