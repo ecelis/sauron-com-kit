@@ -1,0 +1,16 @@
+Build instructions for SauronOS Communications Kit
+===================================================
+
+belle-sip
+---------
+
+    ./configure --prefix=$HOME/local
+    make -j4
+    make install
+
+
+sauron-com-kit
+--------------
+
+    BELLESIP_CFLAGS="-L$HOME/local/lib" BELLESIP_LIBS="-l$HOME/local/lib/libbellesip.so" ./configure --prefix=$HOME/local --disable-x11 --enable-console_ui=yes --enable-gtk_ui=no --enable-alsa --disable-video  --disable-tutorials --disable-nls --enable-external-mediastreamer --enable-external-ortp
+    make -j4
