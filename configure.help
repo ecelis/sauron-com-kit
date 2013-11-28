@@ -1,6 +1,12 @@
+<<<<<<< HEAD
 `configure' configures pjproject 2.x to adapt to many kinds of systems.
 
 Usage: ./aconfigure [OPTION]... [VAR=VALUE]...
+=======
+`configure' configures linphone 3.6.99 to adapt to many kinds of systems.
+
+Usage: ./configure [OPTION]... [VAR=VALUE]...
+>>>>>>> d3d4ee43448380a93f75bf78ad5836342bb23bab
 
 To assign environment variables (e.g., CC, CFLAGS...), specify them as
 VAR=VALUE.  See below for descriptions of some of the useful variables.
@@ -46,12 +52,24 @@ Fine tuning of the installation directories:
   --infodir=DIR           info documentation [DATAROOTDIR/info]
   --localedir=DIR         locale-dependent data [DATAROOTDIR/locale]
   --mandir=DIR            man documentation [DATAROOTDIR/man]
+<<<<<<< HEAD
   --docdir=DIR            documentation root [DATAROOTDIR/doc/pjproject]
+=======
+  --docdir=DIR            documentation root [DATAROOTDIR/doc/linphone]
+>>>>>>> d3d4ee43448380a93f75bf78ad5836342bb23bab
   --htmldir=DIR           html documentation [DOCDIR]
   --dvidir=DIR            dvi documentation [DOCDIR]
   --pdfdir=DIR            pdf documentation [DOCDIR]
   --psdir=DIR             ps documentation [DOCDIR]
 
+<<<<<<< HEAD
+=======
+Program names:
+  --program-prefix=PREFIX            prepend PREFIX to installed program names
+  --program-suffix=SUFFIX            append SUFFIX to installed program names
+  --program-transform-name=PROGRAM   run sed PROGRAM on installed program names
+
+>>>>>>> d3d4ee43448380a93f75bf78ad5836342bb23bab
 System types:
   --build=BUILD     configure for building on BUILD [guessed]
   --host=HOST       cross-compile to build programs to run on HOST [BUILD]
@@ -61,6 +79,7 @@ Optional Features:
   --disable-option-checking  ignore unrecognized --enable/--with options
   --disable-FEATURE       do not include FEATURE (same as --enable-FEATURE=no)
   --enable-FEATURE[=ARG]  include FEATURE [ARG=yes]
+<<<<<<< HEAD
   --disable-floating-point
                           Disable floating point where possible
   --enable-epoll          Use /dev/epoll ioqueue on Linux (experimental)
@@ -96,10 +115,63 @@ Optional Features:
   --disable-silk          Exclude SILK support from the build (default:
                           autodetect)
 
+=======
+  --enable-silent-rules          less verbose build output (undo: `make V=1')
+  --disable-silent-rules         verbose build output (undo: `make V=0')
+  --disable-dependency-tracking  speeds up one-time build
+  --enable-dependency-tracking   do not reject slow dependency extractors
+  --disable-nls           do not use Native Language Support
+  --enable-shared[=PKGS]  build shared libraries [default=yes]
+  --enable-static[=PKGS]  build static libraries [default=no]
+  --enable-fast-install[=PKGS]
+                          optimize for fast installation [default=yes]
+  --disable-libtool-lock  avoid locking (might break parallel builds)
+  --disable-deplibs-link  Disable library dependencies linking (might break
+                          builds)
+  --disable-rpath         do not hardcode runtime library paths
+  --disable-x11           Disable X11 support (default=no)
+  --enable-console_ui=yes/no
+                          Turn on or off compilation of console interface
+                          (default=yes)
+  --enable-tools=yes/no   Turn on or off compilation of console interface
+                          (default=yes)
+  --disable-upnp          Disable uPnP support
+  --enable-gtk_ui=yes/no  Turn on or off compilation of gtk interface
+                          (default=yes)
+  --enable-notify=yes/no  Enable libnotify support (default=yes)
+  --enable-relativeprefix Build a linphone that finds its resources relatively
+                          to the directory where it is installed
+  --enable-date           Use build date in internal version number
+  --enable-ipv6           Turn on ipv6 support
+  --enable-ntp-timestamp  Turn on NTP timestamping on received packet
+  --enable-debug=yes/no   Enables the display of traces showing the execution
+                          of the library. (default=yes)
+  --enable-truespeech     Turn on TrueSpeech support (x86 only)
+  --enable-nonstandard-gsm
+                          Enable GSM codec at nonstandard rates (11025hz,
+                          16000hz)
+  --disable-speex         Disable speex support
+  --enable-video          Turn on video support compiling
+  --enable-alsa           Turn on alsa native support compiling
+  --enable-zrtp           Turn on zrtp support
+  --enable-portaudio      Turn on portaudio native support compiling
+  --enable-assistant      Turn on assistant compiling
+  --enable-strict         Build with stricter options (gcc only) [yes]
+  --enable-external-mediastreamer
+                          Use external mediastreamer library
+  --enable-tunnel=yes/no  Turn on compilation of tunnel support (default=no)
+  --enable-msg-storage=yes/no
+                          Turn on compilation of message storage
+                          (default=auto)
+  --enable-external-ortp  Use external oRTP library
+  --disable-tutorials     Disable compilation of tutorials
+  --disable-tests         Disable compilation of tests
+>>>>>>> d3d4ee43448380a93f75bf78ad5836342bb23bab
 
 Optional Packages:
   --with-PACKAGE[=ARG]    use PACKAGE [ARG=yes]
   --without-PACKAGE       do not use PACKAGE (same as --with-PACKAGE=no)
+<<<<<<< HEAD
   --with-external-speex   Use external Speex development files, not the one in
                           "third_party" directory. When this option is set,
                           make sure that Speex is accessible to use (hint: use
@@ -129,6 +201,23 @@ Optional Packages:
   --with-opencore-amrwbenc=DIR
                           Specify alternate libvo-amrwbenc prefix
   --with-silk=DIR         Specify alternate SILK prefix
+=======
+  --with-pic[=PKGS]       try to use only PIC/non-PIC objects [default=use
+                          both]
+  --with-gnu-ld           assume the C compiler uses GNU ld [default=no]
+  --with-sysroot=DIR Search for dependent libraries within DIR
+                        (or the compiler's sysroot if not specified).
+  --with-gnu-ld           assume the C compiler uses GNU ld default=no
+  --with-libiconv-prefix[=DIR]  search for libiconv in DIR/include and DIR/lib
+  --without-libiconv-prefix     don't search for libiconv in includedir and libdir
+  --with-libintl-prefix[=DIR]  search for libintl in DIR/include and DIR/lib
+  --without-libintl-prefix     don't search for libintl in includedir and libdir
+  --with-configdir        Set a APPDATA subdir where linphone is supposed to
+                          find its config (windows only)
+  --with-readline      Set prefix where gnu readline headers and libs can be found (ex:/usr, /usr/local, none) default=/usr
+  --with-ffmpeg           Sets the installation prefix of ffmpeg, needed for
+                          video support. (default=/usr)
+>>>>>>> d3d4ee43448380a93f75bf78ad5836342bb23bab
 
 Some influential environment variables:
   CC          C compiler command
@@ -141,8 +230,75 @@ Some influential environment variables:
   CXX         C++ compiler command
   CXXFLAGS    C++ compiler flags
   CPP         C preprocessor
+<<<<<<< HEAD
+=======
+  CXXCPP      C++ preprocessor
+  PKG_CONFIG  path to pkg-config utility
+  PKG_CONFIG_PATH
+              directories to add to pkg-config's search path
+  PKG_CONFIG_LIBDIR
+              path overriding pkg-config's built-in search path
+  LIBUPNP_CFLAGS
+              C compiler flags for LIBUPNP, overriding pkg-config
+  LIBUPNP_LIBS
+              linker flags for LIBUPNP, overriding pkg-config
+  LIBXML2_CFLAGS
+              C compiler flags for LIBXML2, overriding pkg-config
+  LIBXML2_LIBS
+              linker flags for LIBXML2, overriding pkg-config
+  LIBGTK_CFLAGS
+              C compiler flags for LIBGTK, overriding pkg-config
+  LIBGTK_LIBS linker flags for LIBGTK, overriding pkg-config
+  LIBGTKMAC_CFLAGS
+              C compiler flags for LIBGTKMAC, overriding pkg-config
+  LIBGTKMAC_LIBS
+              linker flags for LIBGTKMAC, overriding pkg-config
+  NOTIFY4_CFLAGS
+              C compiler flags for NOTIFY4, overriding pkg-config
+  NOTIFY4_LIBS
+              linker flags for NOTIFY4, overriding pkg-config
+  NOTIFY1_CFLAGS
+              C compiler flags for NOTIFY1, overriding pkg-config
+  NOTIFY1_LIBS
+              linker flags for NOTIFY1, overriding pkg-config
+  SPEEX_CFLAGS
+              C compiler flags for SPEEX, overriding pkg-config
+  SPEEX_LIBS  linker flags for SPEEX, overriding pkg-config
+  LIBSOUP_CFLAGS
+              C compiler flags for LIBSOUP, overriding pkg-config
+  LIBSOUP_LIBS
+              linker flags for LIBSOUP, overriding pkg-config
+  LIBGTKWIZARD_CFLAGS
+              C compiler flags for LIBGTKWIZARD, overriding pkg-config
+  LIBGTKWIZARD_LIBS
+              linker flags for LIBGTKWIZARD, overriding pkg-config
+  MEDIASTREAMER_CFLAGS
+              C compiler flags for MEDIASTREAMER, overriding pkg-config
+  MEDIASTREAMER_LIBS
+              linker flags for MEDIASTREAMER, overriding pkg-config
+  TUNNEL_CFLAGS
+              C compiler flags for TUNNEL, overriding pkg-config
+  TUNNEL_LIBS linker flags for TUNNEL, overriding pkg-config
+  SQLITE3_CFLAGS
+              C compiler flags for SQLITE3, overriding pkg-config
+  SQLITE3_LIBS
+              linker flags for SQLITE3, overriding pkg-config
+  BELLESIP_CFLAGS
+              C compiler flags for BELLESIP, overriding pkg-config
+  BELLESIP_LIBS
+              linker flags for BELLESIP, overriding pkg-config
+  ORTP_CFLAGS C compiler flags for ORTP, overriding pkg-config
+  ORTP_LIBS   linker flags for ORTP, overriding pkg-config
+  CUNIT_CFLAGS
+              C compiler flags for CUNIT, overriding pkg-config
+  CUNIT_LIBS  linker flags for CUNIT, overriding pkg-config
+>>>>>>> d3d4ee43448380a93f75bf78ad5836342bb23bab
 
 Use these variables to override the choices made by `configure' or to help
 it to find libraries and programs with nonstandard names/locations.
 
+<<<<<<< HEAD
 Report bugs to the package provider.
+=======
+Report bugs to <linphone-developers@nongnu.org>.
+>>>>>>> d3d4ee43448380a93f75bf78ad5836342bb23bab
