@@ -31,11 +31,16 @@ Features
 Install
 -------
 
+The only thing that needs to be installed is the pjsua python module, as it is not available as a binary package in none of the two GNU/Linux distributions I'm working on, I've included a copy of pjproject version 1.2.0
+
+**TODO** Dependencies
+
 ### CentOS 
 
     cd sauron-com-kit
     su
     ./build.sh
+
 
 ### Ubuntu
 
@@ -51,6 +56,7 @@ Run
 
 
 Enjoy!
+
 Ernesto Celis
 
 P.S. Thank you Teluu Ltd. for the great [pjsip/pjsua](http://www.pjsip.org/) libraries!
