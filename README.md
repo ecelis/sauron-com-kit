@@ -47,6 +47,15 @@ The only thing that needs to be installed is the pjsua python module, as it is n
     cd sauron-com-kit
     sudo ./build.sh
 
+## Manual
+
+    cd sauron-com-kit
+    ./configure --disable-video --disable-ffmpeg --disable-v4l2
+    CFLAGS="-fPIC" CXXFLAGS="-fPIC" make dep
+    CFLAGS="-fPIC" CXXFLAGS="-fPIC" make
+    cd pjsip-apps/src/python
+    python setup.py install
+
 
 Run
 ---

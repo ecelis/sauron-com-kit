@@ -5,5 +5,5 @@ CFLAGS="-fPIC" CXXFLAGS="-fPIC" make dep
 CFLAGS="-fPIC" CXXFLAGS="-fPIC" make
 ## TODO python client not ready yet
 cd pjsip-apps/src/python
-make install
+python setup.py install
 
