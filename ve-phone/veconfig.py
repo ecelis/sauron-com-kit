@@ -33,8 +33,9 @@ def get_address_book():
         data = cursor.fetchall()
         address_book = dict((id,(str(extension),cid)) for id,extension,cid in data)
         return address_book
+
     except:
-	syslog.syslog(syslog.LOG_ERR, "SCK Config Address Book Error, " + dbuser+"@"+dbhost+"/"+dbname)
+        syslog.syslog(syslog.LOG_ERR, "SCK Config Address Book Error, " + dbuser+"@"+dbhost+"/"+dbname)
 
 
 def get_sipcfg():
@@ -45,7 +46,7 @@ def get_sipcfg():
         srv = config.get("sip", "srv")
         pwd = config.get("sip", "passwd")
         sipcfg = dict([('ext', ext), ('srv', srv), ('pwd', pwd)])
-        syslog.syslog(syslog.LOG_INFO,"SCK SIP Account Credetntials, " + ext + "@" + srv)
+        syslog.syslog(syslog.LOG_INFO,"SCK SIP Account Credentials, " + ext + "@" + srv)
         if not sipcfg == None:
             return sipcfg
         else:
@@ -58,24 +59,25 @@ def get_sipcfg():
 def get_audiocfg():
     audiocfg = None
     try:
-	master = config.get("audio", "master")
-	pcm = config.get("audio", "pcm")
-	capture = config.get("audio", "capture")
-	cap_idx = config.get("audio", "cap_idx")
-	input_src = config.get("audio", "input_src")
-	in_idx = config.get("audio", "in_idx")
-	mic = config.get("audio", "mic")
-	mic_boost = config.get("audio", "mic_boost")
-	audiocfg = dict([('master',master),('pcm',pcm),('capture',capture),
-	    ('cap_idx',cap_idx),('input_src',input_src),('in_idx',in_idx),
-	    ('mic',mic),('mic_boost',mic_boost)])
-	if not audiocfg == None:
+        master = config.get("audio", "master")
+        pcm = config.get("audio", "pcm")
+        capture = config.get("audio", "capture")
+        cap_idx = config.get("audio", "cap_idx")
+        input_src = config.get("audio", "input_src")
+        in_idx = config.get("audio", "in_idx")
+        mic = config.get("audio", "mic")
+        mic_boost = config.get("audio", "mic_boost")
+        audiocfg = dict([('master',master),('pcm',pcm),('capture',capture), 
+            ('cap_idx',cap_idx),('input_src',input_src),('in_idx',in_idx),
+            ('mic',mic),('mic_boost',mic_boost)])
+        
+        if not audiocfg == None:
             return audiocfg
         else:
-	    return None
+            return None
 
     except:
-	syslog.syslog(syslog.LOG_ERR,"SCK Config Audio Error.")
+        syslog.syslog(syslog.LOG_ERR,"SCK Config Audio Error.")
 
 
 try:
@@ -84,7 +86,7 @@ try:
 	os.path.expanduser('~/.veconfig.ini'),
         os.path.dirname(os.path.realpath(__file__))+'/config.ini',
         os.path.expanduser('~/sauron-com-kit/ve-phone/config.ini'),
-	'config.ini']
+        'config.ini']
     )
 
 except:
