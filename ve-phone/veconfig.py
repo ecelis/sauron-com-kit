@@ -15,30 +15,6 @@
 import ConfigParser
 import os
 import syslog
-import MySQLdb as db
-
-
-def get_address_book():
-    try:
-        dbname = config.get("database", "name")
-        dbuser = config.get("database", "user")
-        dbpasswd = config.get("database", "passwd")
-        dbhost = config.get("database", "host")
-        # TODO Make it DB agnostic
-        query = ("SELECT id,extension,cid FROM sos_address_book")
-        conn = db.connect(user=dbuser, passwd=dbpasswd, host=dbhost,
-            db=dbname)
-        cursor = conn.cursor()
-        cursor.execute(query)
-        data = cursor.fetchall()
-        address_book = dict((id, (str(extension), cid)) for id,
-                extension,cid in data)
-        return address_book
-
-    except:
-        syslog.syslog(syslog.LOG_ERR,
-                "SCK Config Address Book Error, " + 
-                dbuser + "@" + dbhost + "/" + dbname)
 
 
 def get_sipcfg():
