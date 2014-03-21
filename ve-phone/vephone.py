@@ -30,8 +30,10 @@ def log_cb(level, str, len):
 
 
 def main_loop():
+    speaker_state = None
+    syslog.syslog(syslog.LOG_INFO, "SCK Ready!")
+
     while True:
-        syslog.syslog(syslog.LOG_INFO, "SCK Ready!")
 
         try:
             # Read only one character from standard input
