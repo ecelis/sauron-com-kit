@@ -23,15 +23,15 @@ import veconfig
 #import vess
 #import vetone
 
-LOG_LEVEL = 2
+LOG_LEVEL = 3
 # Logging callback
 def log_cb(level, str, len):
     syslog.syslog(syslog.LOG_INFO,"PJSUA " + str),
+    syslog.syslog(syslog.LOG_INFO, "SCK Ready!")
 
 
 def main_loop():
     while True:
-        syslog.syslog(syslog.LOG_INFO, "SCK Ready!")
 
         try:
             # Read only one character from standard input
