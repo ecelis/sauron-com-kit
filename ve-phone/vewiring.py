@@ -55,7 +55,9 @@ def listenButton():
         res = "women"
 
     if pin_pc == 1:
-        res = "pc"
+        res = "son"
+    else:
+        res = "soff"
 
     if pin_police == 1:
         res = "police"

@@ -31,7 +31,7 @@ def log_cb(level, str, len):
 
 def main_loop():
     ve_speaker_state = None
-    ve_call_state = None
+    ve_call = None
     syslog.syslog(syslog.LOG_INFO, "SCK Ready!")
 
     while True:
@@ -49,34 +49,41 @@ def main_loop():
                 ve_speaker_state = 0"""
 
             if choice == "women":
-                ve_call_state = make_call('sip:' + speedial['ext1'] +
+                ve_call = make_call('sip:' + speedial['ext1'] +
                     '@' + sipcfg['srv'])
                 syslog.syslog(syslog.LOG_INFO,
                     "SCK Dialing ext1")
 
             if choice == "police":
-                ve_call_state = make_call('sip:' + speedial['ext3'] +
+                ve_call = make_call('sip:' + speedial['ext3'] +
                     '@' + sipcfg['srv'])
                 syslog.syslog(syslog.LOG_INFO,
                     "SCK Dialing ext3")
 
             if choice == "cr":
-                ve_call_state = make_call('sip:' + speedial['ext4'] +
+                ve_call = make_call('sip:' + speedial['ext4'] +
                     '@' + sipcfg['srv'])
                 syslog.syslog(syslog.LOG_INFO,
                     "SCK Dialing ext4")
 
             if choice == "fire":
-                ve_call_state = make_call('sip:' + speedial['ext5'] +
+                ve_call = make_call('sip:' + speedial['ext5'] +
                     '@' + sipcfg['srv'])
                 syslog.syslog(syslog.LOG_INFO,
                     "SCK Dialing ext5")
 
-            if choice == "pc":
-                if speaker_state is not 1:
-                    speaker_state = vw.speaker_on()
+            if choice == "son":
+                if ve_speaker_state is not 1:
+                    ve_speaker_state = vw.speaker_on()
                     syslog.syslog(syslog.LOG_INFO,
-                        "SCK Dialing ext5")
+                        "SCK Speaker Enabled")
+                    VeTone().ring_start()
+            elif choice == "soff":
+                if ve_speaker_state is not 0:
+                    ve_speaker_state = vw.speaker_off()
+                    syslog.syslog(syslog.LOG_INFO,
+                        "SCK Speaker Disabled")
+
 
         except ValueError:
             syslog.syslog(syslog.LOG_NOTICE,
