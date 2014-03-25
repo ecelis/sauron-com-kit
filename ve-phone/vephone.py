@@ -23,14 +23,15 @@ import vewiring as vw
 #import vess
 #import vetone
 
-LOG_LEVEL = 2
+LOG_LEVEL = 3
 # Logging callback
 def log_cb(level, str, len):
     syslog.syslog(syslog.LOG_INFO,"PJSUA " + str),
 
 
 def main_loop():
-    speaker_state = None
+    ve_speaker_state = None
+    ve_call_state = None
     syslog.syslog(syslog.LOG_INFO, "SCK Ready!")
 
     while True:
@@ -41,38 +42,41 @@ def main_loop():
             #if choice is not None:
             #    vw.delay()
 
-            # Check speaker status
-            if speaker_state == 0:
+            # Check speaker status and toggle it depending on status
+            # TODO Check this, makes no sense. Were you drunk?
+            """if ve_speaker_state == 0:
                 vw.speaker_off()
-                speaker_state = 0
+                ve_speaker_state = 0"""
 
             if choice == "women":
-                make_call('sip:' + speedial['ext1'] + 
+                ve_call_state = make_call('sip:' + speedial['ext1'] +
                     '@' + sipcfg['srv'])
-                syslog.syslog(syslog.LOG_INFO, 
+                syslog.syslog(syslog.LOG_INFO,
                     "SCK Dialing ext1")
 
             if choice == "police":
-                make_call('sip:' + speedial['ext3'] + 
+                ve_call_state = make_call('sip:' + speedial['ext3'] +
                     '@' + sipcfg['srv'])
-                syslog.syslog(syslog.LOG_INFO, 
+                syslog.syslog(syslog.LOG_INFO,
                     "SCK Dialing ext3")
 
             if choice == "cr":
-                make_call('sip:' + speedial['ext4'] + 
+                ve_call_state = make_call('sip:' + speedial['ext4'] +
                     '@' + sipcfg['srv'])
-                syslog.syslog(syslog.LOG_INFO, 
+                syslog.syslog(syslog.LOG_INFO,
                     "SCK Dialing ext4")
 
             if choice == "fire":
-                make_call('sip:' + speedial['ext5'] + 
+                ve_call_state = make_call('sip:' + speedial['ext5'] +
                     '@' + sipcfg['srv'])
-                syslog.syslog(syslog.LOG_INFO, 
+                syslog.syslog(syslog.LOG_INFO,
                     "SCK Dialing ext5")
 
             if choice == "pc":
                 if speaker_state is not 1:
                     speaker_state = vw.speaker_on()
+                    syslog.syslog(syslog.LOG_INFO,
+                        "SCK Dialing ext5")
 
         except ValueError:
             syslog.syslog(syslog.LOG_NOTICE,
@@ -112,7 +116,7 @@ class VeAccountCallback(pj.AccountCallback):
                         str(self.account.info().reg_status) + ' ' +
                         self.account.info().reg_reason
                 )
-            
+
             self.sem.release()
 
 

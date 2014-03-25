@@ -31,7 +31,7 @@ def get_sipcfg():
 
     except:
         syslog.syslog(syslog.LOG_ERR,
-                "SCK SIP Account Error," + ext + "@" + srv)
+                "SCK SIP Account Error, " + srv)
 
 
 def get_speedial():
