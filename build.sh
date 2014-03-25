@@ -1,3 +1,8 @@
+cd third_party/ffmpeg-1.2.6
+make distclean
+./configure --enable-shared --disable-static --enable-memalign-hack
+make
+make install
 cd pjproject-2.1.0
 make distclean
 rm -f pjmedia/include/pjmedia/config_auto.h
