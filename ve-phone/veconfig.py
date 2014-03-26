@@ -26,12 +26,12 @@ def get_sipcfg():
         pwd = config.get("sip", "passwd")
         sipcfg = dict([('ext', ext), ('srv', srv), ('pwd', pwd)])
         syslog.syslog(syslog.LOG_INFO,
-                "SCK SIP Account Credentials, " + ext + "@" + srv)
+                "SCK Error getting SIP account credentials")
         return sipcfg
 
     except:
         syslog.syslog(syslog.LOG_ERR,
-                "SCK SIP Account Error, " + srv)
+                "SCK Error trying to get config settings")
 
 
 def get_speedial():
