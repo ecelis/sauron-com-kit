@@ -39,8 +39,9 @@ def main_loop():
             # wait for CB pin input
             choice = vw.listenButton()
             # Check if a button has been pushed
-            if choice is not None:
-                vw.delay()
+            # TODO Check if it makes the calls to break
+            #if choice is not None:
+            #    vw.delay()
 
             if choice == "women":
                 ve_call = make_call('sip:' + speedial['ext1'] +
