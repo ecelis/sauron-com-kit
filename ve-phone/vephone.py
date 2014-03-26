@@ -39,14 +39,8 @@ def main_loop():
             # wait for CB pin input
             choice = vw.listenButton()
             # Check if a button has been pushed
-            #if choice is not None:
-            #    vw.delay()
-
-            # Check speaker status and toggle it depending on status
-            # TODO Check this, makes no sense. Were you drunk?
-            """if ve_speaker_state == 0:
-                vw.speaker_off()
-                ve_speaker_state = 0"""
+            if choice is not None:
+                vw.delay()
 
             if choice == "women":
                 ve_call = make_call('sip:' + speedial['ext1'] +
