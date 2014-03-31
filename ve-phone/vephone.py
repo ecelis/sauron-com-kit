@@ -72,9 +72,10 @@ def main_loop():
                     ve_speaker_state = vw.speaker_on()
                     syslog.syslog(syslog.LOG_INFO,
                         "SCK Speaker Enabled")
-                    VeTone().ring_start()
+                    enable_speaker()
             elif choice == "soff":
                 if ve_speaker_state is not 0:
+                    disable_speaker()
                     ve_speaker_state = vw.speaker_off()
                     syslog.syslog(syslog.LOG_INFO,
                         "SCK Speaker Disabled")
@@ -96,6 +97,11 @@ def make_call(uri):
         syslog.syslog(syslog.LOG_ERR, "SCK " + str(e))
         return None
 
+def enable_speaker():
+    lib.conf_connect(0,0)
+
+def disable_speaker():
+    lib.conf_disconnect(0,0)
 
 """ Callback for handling registration on PBX """
 class VeAccountCallback(pj.AccountCallback):
@@ -228,6 +234,7 @@ try:
     transport = lib.create_transport(pj.TransportType.UDP)
     # Start the library
     lib.start()
+    print lib.enum_snd_dev()
 
     if sipcfg == None:
         # Create local/user-less account
