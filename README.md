@@ -74,15 +74,16 @@ With video support
 Configure
 ---------
 
-Copy the file sauron-com-kit/ve-phone/config.ini.orig either to
-~/config.ini or ~/settings/config.ini or
-sauron-com-kit/ve-phone/config.ini
+Copy the file `sauron-com-kit/ve-phone/config.ini.orig` either to
+`~/config.ini` or `~/settings/config.ini` or
+`sauron-com-kit/ve-phone/config.ini`
 
 Edit the file with your PBX user name and password, speed dial extension
 numbers and audio settings for your sound card if needed
 
 
-Run ---
+Run
+---
 
    cd sauron-com-kit/ve-phone python vephone.py
 
