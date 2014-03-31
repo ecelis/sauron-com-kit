@@ -1,5 +1,5 @@
-SauronOS Communications Kit
-===========================
+Sauron-OS Communications Kit
+============================
 
 Built on top of pjsua library, SCK aims to provide VoIP capabilities to
 Citizenship's Towers System. It is a SIP client writen in python for a
@@ -25,7 +25,6 @@ Features
 * Logs to system's log
 * Command line only
 * Plain text config file
-* Database or config file backend for phone book
 
 
 Install
@@ -35,7 +34,7 @@ The only thing that needs to be installed is the pjsua python module, as it is n
 
 **TODO** Dependencies
 
-### CentOS 
+### CentOS/Fedora
 
     cd sauron-com-kit
     su
@@ -47,9 +46,24 @@ The only thing that needs to be installed is the pjsua python module, as it is n
     cd sauron-com-kit
     sudo ./build.sh
 
-## Manual
+### Manual
 
-    cd sauron-com-kit
+No video support
+
+    cd sauron-com-kit/third_party/pjproject-2.1.0
+    ./configure --disable-video --disable-ffmpeg --disable-v4l2
+    CFLAGS="-fPIC" CXXFLAGS="-fPIC" make dep
+    CFLAGS="-fPIC" CXXFLAGS="-fPIC" make
+    cd pjsip-apps/src/python
+    python setup.py install
+
+With video support
+
+    cd sauron-com-kit/third_party/ffmpeg-1.2.6
+    ./configure --enable-shared --disable-static --enable-memalign-hack
+    make -j2
+    make install
+    cd sauron-com-kit/third_party/pjproject-2.1.0
     ./configure --disable-video --disable-ffmpeg --disable-v4l2
     CFLAGS="-fPIC" CXXFLAGS="-fPIC" make dep
     CFLAGS="-fPIC" CXXFLAGS="-fPIC" make
@@ -57,15 +71,25 @@ The only thing that needs to be installed is the pjsua python module, as it is n
     python setup.py install
 
 
-Run
----
+Configure
+---------
 
-   cd sauron-com-kit/ve-phone
-   python vephone.py
+Copy the file sauron-com-kit/ve-phone/config.ini.orig either to
+~/config.ini or ~/settings/config.ini or
+sauron-com-kit/ve-phone/config.ini
+
+Edit the file with your PBX user name and password, speed dial extension
+numbers and audio settings for your sound card if needed
+
+
+Run ---
+
+   cd sauron-com-kit/ve-phone python vephone.py
 
 
 Enjoy!
 
 Ernesto Celis
 
-P.S. Thank you Teluu Ltd. for the great [pjsip/pjsua](http://www.pjsip.org/) libraries!
+P.S. Thank you Teluu Ltd. for the great
+[pjsip/pjsua](http://www.pjsip.org/) libraries!

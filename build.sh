@@ -2,7 +2,7 @@
 CWD=$(pwd)
 PJPDIR=third_party/pjproject-2.1.0
 FMPDIR=third_party/ffmpeg-1.2.6
-ENABLE_VIDEO=$1
+#ENABLE_VIDEO=$1
 
 usage () {
   echo "Usage: $0 TODO"
@@ -10,8 +10,10 @@ usage () {
 }
 
 #[[ $# -eq 0 ]] && usage
+echo -e "Enable video support? [y/N]"
+read ENABLE_VIDEO
 
-if [[ $ENABLE_VIDEO -eq 1 ]] ; then
+if [[ $ENABLE_VIDEO == 'y' ]] ; then
   cd $CWD/$FMPDIR
   make distclean
   ./configure --enable-shared --disable-static --enable-memalign-hack
@@ -32,7 +34,7 @@ rm -f pjlib-util/build/os-auto.mak
 rm -f build/os-auto.mak
 rm -f build/cc-auto.mak
 rm -f build.mak
-if [[ $ENABLE_VIDEO -eq 1 ]] ; then
+if [[ $ENABLE_VIDEO == 'y' ]] ; then
   ./configure
 else
   ./configure --disable-video --disable-ffmpeg --disable-v4l2
