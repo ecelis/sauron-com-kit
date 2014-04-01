@@ -44,10 +44,11 @@ def main_loop():
             #    vw.delay()
 
             if choice == "women":
-                ve_call = make_call('sip:' + speedial['ext1'] +
-                    '@' + sipcfg['srv'])
-                syslog.syslog(syslog.LOG_INFO,
-                    "SCK Dialing ext1")
+                if ve_call is not 0:
+                    ve_call = make_call('sip:' + speedial['ext1'] +
+                        '@' + sipcfg['srv'])
+                    syslog.syslog(syslog.LOG_INFO,
+                        "SCK Dialing ext1")
 
             if choice == "police":
                 ve_call = make_call('sip:' + speedial['ext3'] +
