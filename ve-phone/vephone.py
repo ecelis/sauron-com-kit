@@ -14,87 +14,88 @@
 #
 
 import os
+import platform as pf
 import sys
 import pjsua as pj
 import threading
-import syslog
-import veconfig
-import vewiring as vw
+import syslog as log
+import veconfig as vc
+import vegpio as gpio
 #import vess
 #import vetone
 
 LOG_LEVEL = 3
 # Logging callback
 def log_cb(level, str, len):
-    syslog.syslog(syslog.LOG_INFO,"PJSUA " + str),
+    log.syslog(log.LOG_INFO,"PJSUA " + str),
 
 
 def main_loop():
-    ve_speaker_state = None
-    ve_call = None
-    syslog.syslog(syslog.LOG_INFO, "SCK Ready!")
+    log.syslog(log.LOG_INFO, "SCK Ready!")
+
+    global ve_local_audio
+    global ve_call
 
     while True:
         try:
-            # wait for CB pin input
-            choice = vw.listenButton()
-            # Check if a button has been pushed
-            # TODO Check if it makes the calls to break
-            #if choice is not None:
-            #    vw.delay()
+            # wait for pin input
+            choice = gpio.listen()
 
             if choice == "women":
                 ve_call = make_call('sip:' + speedial['ext1'] +
                     '@' + sipcfg['srv'])
-                syslog.syslog(syslog.LOG_INFO,
+                log.syslog(log.LOG_INFO,
                     "SCK Dialing ext1")
 
             if choice == "police":
                 ve_call = make_call('sip:' + speedial['ext3'] +
                     '@' + sipcfg['srv'])
-                syslog.syslog(syslog.LOG_INFO,
+                log.syslog(log.LOG_INFO,
                     "SCK Dialing ext3")
 
             if choice == "cr":
                 ve_call = make_call('sip:' + speedial['ext4'] +
                     '@' + sipcfg['srv'])
-                syslog.syslog(syslog.LOG_INFO,
+                log.syslog(log.LOG_INFO,
                     "SCK Dialing ext4")
 
             if choice == "fire":
                 ve_call = make_call('sip:' + speedial['ext5'] +
                     '@' + sipcfg['srv'])
-                syslog.syslog(syslog.LOG_INFO,
+                log.syslog(log.LOG_INFO,
                     "SCK Dialing ext5")
 
-            if choice == "son":
-                if ve_speaker_state is not 1:
-                    ve_speaker_state = vw.speaker_on()
-                    syslog.syslog(syslog.LOG_INFO,
-                        "SCK Speaker Enabled")
-                    VeTone().ring_start()
-            elif choice == "soff":
-                if ve_speaker_state is not 0:
-                    ve_speaker_state = vw.speaker_off()
-                    syslog.syslog(syslog.LOG_INFO,
-                        "SCK Speaker Disabled")
+            if (choice == "son") or (choice == "soff"):
+                local_audio_toggle()
 
 
         except ValueError:
-            syslog.syslog(syslog.LOG_NOTICE,
+            log.syslog(log.LOG_NOTICE,
                     "SCK Exception, this is weird!")
 
 	    continue
 
 
+""" Make a call to specified SIP URI """
 def make_call(uri):
     try:
-        syslog.syslog(syslog.LOG_INFO, "SCK ("+uri+")")
+        log.syslog(log.LOG_INFO, "SCK ("+uri+")")
         call = acc.make_call(uri, VeCallCallback())
         return call
     except pj.Error, e:
-        syslog.syslog(syslog.LOG_ERR, "SCK " + str(e))
+        log.syslog(log.LOG_ERR, "SCK " + str(e))
         return None
+
+""" Toggle local audio On and Off """
+def local_audio_toggle(self):
+    global ve_local_audio
+    if ve_local_audio == False:
+        # TODO Check if there is no ongoing call
+        lib.conf_connect(0, 0)
+        log.syslog(log.LOG_INFO, 'SCK Local Audio Enabled')
+    elif ve_local_audio == True:
+        lib.conf_disconnect(0, 0)
+        log.syslog(log.LOG_INFO, 'SCK Local Audio Disabled')
 
 
 """ Callback for handling registration on PBX """
@@ -113,7 +114,7 @@ class VeAccountCallback(pj.AccountCallback):
     def on_reg_state(self):
         if self.sem:
             if self.account.info().reg_status >= 200:
-                syslog.syslog(syslog.LOG_ERR,
+                log.syslog(log.LOG_ERR,
                         'SCK registration status ' +
                         str(self.account.info().reg_status) + ' ' +
                         self.account.info().reg_reason
@@ -124,7 +125,7 @@ class VeAccountCallback(pj.AccountCallback):
 
     def on_incoming_call(self, call):
 	#TODO A lot of stuff, call handling mainly and logging also
-        syslog.syslog(syslog.LOG_INFO, "SCK Incoming call from " + 
+        log.syslog(log.LOG_INFO, "SCK Incoming call from " + 
                 call.info().remote_uri
         )
         global current_call
@@ -146,13 +147,13 @@ class VeCallCallback(pj.CallCallback):
 
     def on_state(self):
         global current_call
-        syslog.syslog(syslog.LOG_INFO,
+        log.syslog(log.LOG_INFO,
                 "SCK Call is " + self.call.info().state_text
         )
-        syslog.syslog(syslog.LOG_INFO, " Last code = " +
+        log.syslog(log.LOG_INFO, " Last code = " +
                 str(self.call.info().last_code)
         )
-        syslog.syslog(syslog.LOG_INFO,
+        log.syslog(log.LOG_INFO,
                 " (" + self.call.info().last_reason + ")"
         )
 
@@ -209,9 +210,9 @@ try:
     # Initialize ValkEye Sound System
     #audio = vess.VSS()
     # Get PBX/SIP username/extension, PBX server and password
-    sipcfg = veconfig.get_sipcfg()
+    sipcfg = vc.get_sipcfg()
     # Get Speed Dial Extensions
-    speedial = veconfig.get_speedial()
+    speedial = vc.get_speedial()
     # Media Config
     media = pj.MediaConfig()
     media.ec_options = 0 # pjsua default 0
@@ -222,7 +223,7 @@ try:
     lib = pj.Lib()
     # Init pjsua with default config
     lib.init(log_cfg = pj.LogConfig(level=LOG_LEVEL, callback=log_cb))
-    # Set sound device TODO in veconfig.py
+    # Set sound device TODO in vc.py
     #lib.set_snd_dev(0,0)
     # Create UDP transport which listens to any available port
     transport = lib.create_transport(pj.TransportType.UDP)
@@ -243,6 +244,9 @@ try:
     acc_cb = VeAccountCallback(acc)
     acc.set_callback(acc_cb)
     acc_cb.wait()
+    # Global variables
+    ve_local_audio = False
+    ve_call = None
     # main loop
     main_loop()
     # We're done, shutdown the library
@@ -251,7 +255,7 @@ try:
     sys.exit(0)
 
 except pj.Error, e:
-    syslog.syslog(syslog.LOG_ERR, "SCK Exception: " + str(e))
+    log.syslog(log.LOG_ERR, "SCK Exception: " + str(e))
     lib.destroy()
     lib = None
     sys.exit(1)
