@@ -40,6 +40,7 @@ def main_loop():
         try:
             # wait for pin input
             choice = gpio.listen()
+            #log.syslog(log.LOG_INFO, choice)
 
             if choice == "women":
                 ve_call = make_call('sip:' + speedial['ext1'] +
@@ -87,14 +88,16 @@ def make_call(uri):
         return None
 
 """ Toggle local audio On and Off """
-def local_audio_toggle(self):
+def local_audio_toggle():
     global ve_local_audio
     if ve_local_audio == False:
         # TODO Check if there is no ongoing call
+        ve_local_audio = True
         lib.conf_connect(0, 0)
         log.syslog(log.LOG_INFO, 'SCK Local Audio Enabled')
     elif ve_local_audio == True:
         lib.conf_disconnect(0, 0)
+        ve_local_audio = False
         log.syslog(log.LOG_INFO, 'SCK Local Audio Disabled')
 
 
@@ -224,7 +227,7 @@ try:
     # Init pjsua with default config
     lib.init(log_cfg = pj.LogConfig(level=LOG_LEVEL, callback=log_cb))
     # Set sound device TODO in vc.py
-    #lib.set_snd_dev(0,0)
+    lib.set_snd_dev(0,0)
     # Create UDP transport which listens to any available port
     transport = lib.create_transport(pj.TransportType.UDP)
     # Start the library

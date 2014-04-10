@@ -34,21 +34,24 @@ GPIO_PATH = '/sys/class/gpio/'
 VAL='/value'
 DIR='/direction'
 
-def _readPinValue(self, pin):
-    with open(GPIO_PATH + str(pin) + VALUE) as f:
+def _readPinValue(pin):
+    with open(GPIO_PATH + pin + VAL, 'r') as f:
         for line in f:
             return line.rstrip('\n')
 
-def digitalRead(self, pin):
+def digitalRead(pin):
+    val = None
     try:
-        return _readPinValue(pin)
+        val = _readPinValue(pin)
+        if val is not None:
+            return int(_readPinValue(pin))
     except:
         return None
 
-def digitalWrite(self, pin, value):
+def digitalWrite(pin, value):
     pass
 
-def listen(self):
+def listen():
     #TODO Pass a list or dictionary of pins and iterate over it
     if digitalRead('gpio4_pg1') == 0:
         return "women"
@@ -60,9 +63,9 @@ def listen(self):
         return "cr"
     if digitalRead('gpio9_pg9') == 0:
         return "pc"
-    if digitalRead('gpio11_pg11') == 0:
+    #if digitalRead('gpio11_pg11') == 1:
         return "son"
-    elif digitalRead('gpio11_pg11') == 1:
+    #elif digitalRead('gpio11_pg11') == 0:
         return "soff"
 
 
