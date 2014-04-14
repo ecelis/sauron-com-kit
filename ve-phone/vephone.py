@@ -17,17 +17,19 @@ import os
 import sys
 import pjsua as pj
 import threading
-import syslog
+from syslog import syslog as logger
+from syslog import LOG_INFO as log_info
+from syslog import LOG_ERR as log_err
 import asgetch as gc
-import veconfig
+import veconfig as vc
 #import vess
 #import vetone
 
 LOG_LEVEL = 3
 # Logging callback
 def log_cb(level, str, len):
-    syslog.syslog(syslog.LOG_INFO,"PJSUA " + str),
-    syslog.syslog(syslog.LOG_INFO, "SCK Ready!")
+    logger(log_info,"PJSUA " + str),
+    logger(log_info, "SCK Ready!")
 
 
 def main_loop():
@@ -40,21 +42,21 @@ def main_loop():
             # Special options are handled by *,-,+ and / characters
             if choice == "*":
                 # * enable local audio
-                syslog.syslog(syslog.LOG_INFO,
+                logger(log_info,
                         "SCK Toggle Local MIC")
                 # TODO
             elif choice == "+":
                 # Test only option, do not use it for real services!
-                syslog.syslog(syslog.LOG_INFO,
+                logger(log_info,
                         "SCK Dialing TEST")
                 make_call("sip:1106@sip.sdf.org")
             elif choice == "-":
                 # TODO reserved
-                syslog.syslog(syslog.LOG_INFO,
+                logger(log_info,
                         "SCK - Action Reserved")
             elif choice == "/":
                 # Exit manually
-                syslog.syslog(syslog.LOG_NOTICE,
+                logger(log_info,
                         "SCK Exit on user request!")
                 return
             else:
@@ -63,31 +65,31 @@ def main_loop():
                     if extension == "ext1":
                         make_call('sip:' + speedial['ext1'] + 
                                 '@' + sipcfg['srv'])
-                        syslog.syslog(syslog.LOG_INFO, 
+                        logger(log_info, 
                                 "SCK Dialing " + extension)
                     elif extension == "ext2":
                         make_call('sip:' + speedial['ext2'] + 
                                 '@' + sipcfg['srv'])
-                        syslog.syslog(syslog.LOG_INFO, 
+                        logger(log_info, 
                                 "SCK Dialing " + extension)
                     elif extension == "ext3":
                         make_call('sip:' + speedial['ext3'] + 
                                 '@' + sipcfg['srv'])
-                        syslog.syslog(syslog.LOG_INFO, 
+                        logger(log_info, 
                                 "SCK Dialing " + extension)
                     elif extension == "ext4":
                         make_call('sip:' + speedial['ext4'] + 
                                 '@' + sipcfg['srv'])
-                        syslog.syslog(syslog.LOG_INFO, 
+                        logger(log_info, 
                                 "SCK Dialing " + extension)
                     elif extension == "ext5":
                         make_call('sip:' + speedial['ext5'] + 
                                 '@' + sipcfg['srv'])
-                        syslog.syslog(syslog.LOG_INFO, 
+                        logger(log_info, 
                                 "SCK Dialing " + extension)
 
         except ValueError:
-            syslog.syslog(syslog.LOG_NOTICE,
+            logger(syslog.LOG_NOTICE,
                     "SCK Exception, this is weird!")
 
 	    continue
@@ -95,11 +97,11 @@ def main_loop():
 
 def make_call(uri):
     try:
-        syslog.syslog(syslog.LOG_INFO, "SCK ("+uri+")")
+        logger(log_info, "SCK ("+uri+")")
         call = acc.make_call(uri, VeCallCallback())
         return call
     except pj.Error, e:
-        syslog.syslog(syslog.LOG_ERR, "SCK " + str(e))
+        logger(log_err, "SCK " + str(e))
         return None
 
 
@@ -119,18 +121,18 @@ class VeAccountCallback(pj.AccountCallback):
     def on_reg_state(self):
         if self.sem:
             if self.account.info().reg_status >= 200:
-                syslog.syslog(syslog.LOG_ERR,
+                logger(log_err,
                         'SCK registration status ' +
                         str(self.account.info().reg_status) + ' ' +
                         self.account.info().reg_reason
                 )
-            
+
             self.sem.release()
 
 
     def on_incoming_call(self, call):
 	#TODO A lot of stuff, call handling mainly and logging also
-        syslog.syslog(syslog.LOG_INFO, "SCK Incoming call from " + 
+        logger(log_info, "SCK Incoming call from " + 
                 call.info().remote_uri
         )
         global current_call
@@ -152,13 +154,13 @@ class VeCallCallback(pj.CallCallback):
 
     def on_state(self):
         global current_call
-        syslog.syslog(syslog.LOG_INFO,
+        logger(log_info,
                 "SCK Call is " + self.call.info().state_text
         )
-        syslog.syslog(syslog.LOG_INFO, " Last code = " +
+        logger(log_info, " Last code = " +
                 str(self.call.info().last_code)
         )
-        syslog.syslog(syslog.LOG_INFO,
+        logger(log_info,
                 " (" + self.call.info().last_reason + ")"
         )
 
@@ -215,9 +217,9 @@ try:
     # Initialize ValkEye Sound System
     #audio = vess.VSS()
     # Get PBX/SIP username/extension, PBX server and password
-    sipcfg = veconfig.get_sipcfg()
+    sipcfg = vc.get_sipcfg()
     # Get Speed Dial Extensions
-    speedial = veconfig.get_speedial()
+    speedial = vc.get_speedial()
     # Media Config
     media = pj.MediaConfig()
     media.ec_options = 0 # pjsua default 0
@@ -228,7 +230,7 @@ try:
     lib = pj.Lib()
     # Init pjsua with default config
     lib.init(log_cfg = pj.LogConfig(level=LOG_LEVEL, callback=log_cb))
-    # Set sound device TODO in veconfig.py
+    # Set sound device TODO in vc.py
     #lib.set_snd_dev(0,0)
     # Create UDP transport which listens to any available port
     transport = lib.create_transport(pj.TransportType.UDP)
@@ -257,7 +259,7 @@ try:
     sys.exit(0)
 
 except pj.Error, e:
-    syslog.syslog(syslog.LOG_ERR, "SCK Exception: " + str(e))
+    logger(log_err, "SCK Exception: " + str(e))
     lib.destroy()
     lib = None
     sys.exit(1)

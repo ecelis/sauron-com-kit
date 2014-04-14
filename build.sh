@@ -5,6 +5,7 @@ FMPDIR=third_party/ffmpeg-1.2.6
 #ENABLE_VIDEO=$1
 
 usage () {
+#TODO
   echo "Usage: $0 TODO"
   exit 1
 }
@@ -42,6 +43,6 @@ fi
 CFLAGS="-fPIC" CXXFLAGS="-fPIC" make dep
 CFLAGS="-fPIC" CXXFLAGS="-fPIC" make
 ## TODO python client not ready yet
-cd pjsip-apps/src/python
+cd $CWD/$PJDIR/pjsip-apps/src/python
 python setup.py install
 
