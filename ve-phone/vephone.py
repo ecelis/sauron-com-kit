@@ -18,6 +18,9 @@ import platform as pf
 import sys
 import pjsua as pj
 import threading
+from syslog import syslog as logger
+from syslog import LOG_INFO as log_info
+from syslog import LOG_ERR as log_err
 import syslog as log
 import veconfig as vc
 import vegpio as gpio
@@ -27,7 +30,8 @@ import vegpio as gpio
 LOG_LEVEL = 3
 # Logging callback
 def log_cb(level, str, len):
-    log.syslog(log.LOG_INFO,"PJSUA " + str),
+    logger(log_info,"PJSUA " + str),
+    logger(log_info, "SCK Ready!")
 
 
 def main_loop():
@@ -71,7 +75,7 @@ def main_loop():
 
 
         except ValueError:
-            log.syslog(log.LOG_NOTICE,
+            logger(log_info,
                     "SCK Exception, this is weird!")
 
 	    continue
@@ -80,11 +84,11 @@ def main_loop():
 """ Make a call to specified SIP URI """
 def make_call(uri):
     try:
-        log.syslog(log.LOG_INFO, "SCK ("+uri+")")
+        logger(log_info, "SCK ("+uri+")")
         call = acc.make_call(uri, VeCallCallback())
         return call
     except pj.Error, e:
-        log.syslog(log.LOG_ERR, "SCK " + str(e))
+        logger(log_err, "SCK " + str(e))
         return None
 
 """ Toggle local audio On and Off """
@@ -117,7 +121,7 @@ class VeAccountCallback(pj.AccountCallback):
     def on_reg_state(self):
         if self.sem:
             if self.account.info().reg_status >= 200:
-                log.syslog(log.LOG_ERR,
+                logger(log_err,
                         'SCK registration status ' +
                         str(self.account.info().reg_status) + ' ' +
                         self.account.info().reg_reason
@@ -128,7 +132,7 @@ class VeAccountCallback(pj.AccountCallback):
 
     def on_incoming_call(self, call):
 	#TODO A lot of stuff, call handling mainly and logging also
-        log.syslog(log.LOG_INFO, "SCK Incoming call from " + 
+        logger(log_info, "SCK Incoming call from " + 
                 call.info().remote_uri
         )
         global current_call
@@ -150,13 +154,13 @@ class VeCallCallback(pj.CallCallback):
 
     def on_state(self):
         global current_call
-        log.syslog(log.LOG_INFO,
+        logger(log_info,
                 "SCK Call is " + self.call.info().state_text
         )
-        log.syslog(log.LOG_INFO, " Last code = " +
+        logger(log_info, " Last code = " +
                 str(self.call.info().last_code)
         )
-        log.syslog(log.LOG_INFO,
+        logger(log_info,
                 " (" + self.call.info().last_reason + ")"
         )
 
@@ -258,7 +262,7 @@ try:
     sys.exit(0)
 
 except pj.Error, e:
-    log.syslog(log.LOG_ERR, "SCK Exception: " + str(e))
+    logger(log_err, "SCK Exception: " + str(e))
     lib.destroy()
     lib = None
     sys.exit(1)

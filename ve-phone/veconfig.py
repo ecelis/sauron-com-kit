@@ -14,24 +14,25 @@
 
 import ConfigParser
 import os
-import syslog
-
+from syslog import syslog as logger
+from syslog import LOG_INFO as log_info
+from syslog import LOG_ERR as log_err
 
 def get_sipcfg():
     sipcfg = None
-    syslog.syslog(syslog.LOG_INFO, "SCK Trying to register in PBX")
+    logger(log_info, "SCK Trying to register in PBX")
     try:
         ext = config.get("sip", "ext")
         srv = config.get("sip", "srv")
         pwd = config.get("sip", "passwd")
         sipcfg = dict([('ext', ext), ('srv', srv), ('pwd', pwd)])
-        syslog.syslog(syslog.LOG_INFO,
-                "SCK Error getting SIP account credentials")
+        logger(log_info,
+                "SCK SIP Account Credentials, " + ext + "@" + srv)
         return sipcfg
 
     except:
-        syslog.syslog(syslog.LOG_ERR,
-                "SCK Error trying to get config settings")
+        logger(log_err,
+                "SCK SIP Account Error," + ext + "@" + srv)
 
 
 def get_speedial():
@@ -47,7 +48,7 @@ def get_speedial():
         return speedial
 
     except:
-        syslog.syslog(syslog.LOG_ERR, "SCK Can't Load Speed Dial Extensions")
+        logger(log_err, "SCK Can't Load Speed Dial Extensions")
 
 
 def get_audiocfg():
@@ -68,7 +69,7 @@ def get_audiocfg():
         return audiocfg
 
     except:
-        syslog.syslog(syslog.LOG_ERR,"SCK Config Audio Error.")
+        logger(log_err,"SCK Config Audio Error.")
 
 
 try:
@@ -81,5 +82,5 @@ try:
     )
 
 except:
-    syslog.syslog(syslog.LOG_ERR, "SCK General Config Exception,")
+    logger(log_err, "SCK General Config Exception,")
 
