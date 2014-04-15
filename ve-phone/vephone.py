@@ -14,6 +14,7 @@
 #
 
 import os
+import platform as pf
 import sys
 import pjsua as pj
 import threading
@@ -22,6 +23,7 @@ from syslog import LOG_INFO as log_info
 from syslog import LOG_ERR as log_err
 import asgetch as gc
 import veconfig as vc
+import vegpio as gpio
 #import vess
 #import vetone
 
@@ -95,6 +97,7 @@ def main_loop():
 	    continue
 
 
+""" Make a call to specified SIP URI """
 def make_call(uri):
     try:
         logger(log_info, "SCK ("+uri+")")
@@ -103,6 +106,19 @@ def make_call(uri):
     except pj.Error, e:
         logger(log_err, "SCK " + str(e))
         return None
+
+""" Toggle local audio On and Off """
+def local_audio_toggle():
+    global ve_local_audio
+    if ve_local_audio == False:
+        # TODO Check if there is no ongoing call
+        ve_local_audio = True
+        lib.conf_connect(0, 0)
+        log.syslog(log.LOG_INFO, 'SCK Local Audio Enabled')
+    elif ve_local_audio == True:
+        lib.conf_disconnect(0, 0)
+        ve_local_audio = False
+        log.syslog(log.LOG_INFO, 'SCK Local Audio Disabled')
 
 
 """ Callback for handling registration on PBX """
@@ -251,6 +267,9 @@ try:
     acc_cb = VeAccountCallback(acc)
     acc.set_callback(acc_cb)
     acc_cb.wait()
+    # Global variables
+    ve_local_audio = False
+    ve_call = None
     # main loop
     main_loop()
     # We're done, shutdown the library
