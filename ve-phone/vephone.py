@@ -43,25 +43,25 @@ def main_loop():
             # wait for pin input
             choice = gpio.listen()
 
-            if choice == "women":
+            if (choice == "women") and (ve_call is None):
                 ve_call = make_call('sip:' + speedial['ext1'] +
                     '@' + sipcfg['srv'])
                 logger(log_info,
                     "SCK Dialing ext1")
 
-            if choice == "police":
+            if (choice == "police") and (ve_call is None):
                 ve_call = make_call('sip:' + speedial['ext3'] +
                     '@' + sipcfg['srv'])
                 logger(log_info,
                     "SCK Dialing ext3")
 
-            if choice == "cr":
+            if (choice == "cr") and (ve_call is None):
                 ve_call = make_call('sip:' + speedial['ext4'] +
                     '@' + sipcfg['srv'])
                 logger(log_info,
                     "SCK Dialing ext4")
 
-            if choice == "fire":
+            if (choice == "fire") and (ve_call is None):
                 ve_call = make_call('sip:' + speedial['ext5'] +
                     '@' + sipcfg['srv'])
                 logger(log_info,
@@ -133,12 +133,14 @@ class VeAccountCallback(pj.AccountCallback):
                 call.info().remote_uri
         )
         global current_call
+        global ve_call
         #TODO global tone
         #tone = VeTone().ring_start()
         current_call = call
         call_cb = VeCallCallback(current_call)
         current_call.set_callback(call_cb)
         current_call.answer(200)
+        #TODO LOG MESSAGE
 
 
 
@@ -162,6 +164,7 @@ class VeCallCallback(pj.CallCallback):
         )
 
         global call_state
+        global ve_call
         call_state = self.call.info().state
 
         #global tone
@@ -171,6 +174,7 @@ class VeCallCallback(pj.CallCallback):
         elif call_state == pj.CallState.DISCONNECTED:
             #VeTone().ring_stop(tone)
             current_call = None
+            ve_call = None
 
     # Notification when call's media state changed
     def on_media_state(self):
