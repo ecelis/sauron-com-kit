@@ -43,6 +43,6 @@ fi
 CFLAGS="-fPIC" CXXFLAGS="-fPIC" make dep
 CFLAGS="-fPIC" CXXFLAGS="-fPIC" make
 ## TODO python client not ready yet
-cd $CWD/$PJDIR/pjsip-apps/src/python
+cd $CWD/$PJPDIR/pjsip-apps/src/python
 python setup.py install
 
