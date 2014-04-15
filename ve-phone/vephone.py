@@ -67,8 +67,8 @@ def main_loop():
                 logger(log_info,
                     "SCK Dialing ext5")
 
-            if (choice == "son") or (choice == "soff"):
-                local_audio_toggle()
+            if (choice == "son" or choice == "soff") and ve_call is None:
+                local_audio(choice)
 
 
         except ValueError:
@@ -89,14 +89,16 @@ def make_call(uri):
         return None
 
 """ Toggle local audio On and Off """
-def local_audio_toggle():
+def local_audio(choice):
     global ve_local_audio
-    if ve_local_audio == False:
+    if ve_local_audio == False and choice == "son":
         # TODO Check if there is no ongoing call
+        os.system("/home/valkeye/valkeye/assets/bash/speaker-on")
         ve_local_audio = True
         lib.conf_connect(0, 0)
         logger(log_info, 'SCK Local Audio Enabled')
     elif ve_local_audio == True:
+        os.system("/home/valkeye/valkeye/assets/bash/speaker-off")
         lib.conf_disconnect(0, 0)
         ve_local_audio = False
         logger(log_info, 'SCK Local Audio Disabled')
