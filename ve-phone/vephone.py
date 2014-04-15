@@ -25,7 +25,7 @@ import veconfig as vc
 #import vess
 #import vetone
 
-LOG_LEVEL = 3
+LOG_LEVEL = 2
 # Logging callback
 def log_cb(level, str, len):
     logger(log_info,"PJSUA " + str),
@@ -89,7 +89,7 @@ def main_loop():
                                 "SCK Dialing " + extension)
 
         except ValueError:
-            logger(syslog.LOG_NOTICE,
+            logger(log_info,
                     "SCK Exception, this is weird!")
 
 	    continue
@@ -231,7 +231,7 @@ try:
     # Init pjsua with default config
     lib.init(log_cfg = pj.LogConfig(level=LOG_LEVEL, callback=log_cb))
     # Set sound device TODO in vc.py
-    lib.set_snd_dev(-1,-1)
+    lib.set_snd_dev(0,0)
     # Create UDP transport which listens to any available port
     transport = lib.create_transport(pj.TransportType.UDP)
     # Start the library
