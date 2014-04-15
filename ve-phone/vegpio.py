@@ -15,16 +15,18 @@
 
 import os
 import sys
-import syslog
+from syslog import syslog as logger
+from syslog import LOG_INFO as log_info
+from syslog import LOG_ERR as log_err
 
 INPUT = 0
 OUTPUT = 1
-#TODO PWM_OUTPUT
+#TODO PWM_OUTPUT = 2
 PULLUP = 3
 PULLDOWN = 4
 PULLOFF = 5
-#TODO CHECK
-#TODO GPIO_CLOCK
+#TODO CHECK = 6
+#TODO GPIO_CLOCK = 7
 
 LOW = 0
 HIGH = 1
