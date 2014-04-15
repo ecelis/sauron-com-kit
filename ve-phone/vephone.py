@@ -259,7 +259,7 @@ try:
     sys.exit(0)
 
 except pj.Error, e:
-    syslog.syslog(syslog.LOG_ERR, "SCK Exception: " + str(e))
+    logger(log_err, "SCK Exception: " + str(e))
     lib.destroy()
     lib = None
     sys.exit(1)
