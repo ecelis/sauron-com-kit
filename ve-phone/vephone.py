@@ -21,7 +21,6 @@ import threading
 from syslog import syslog as logger
 from syslog import LOG_INFO as log_info
 from syslog import LOG_ERR as log_err
-import syslog as log
 import veconfig as vc
 import vegpio as gpio
 #import vess
@@ -35,7 +34,6 @@ def log_cb(level, str, len):
 
 
 def main_loop():
-    log.syslog(log.LOG_INFO, "SCK Ready!")
 
     global ve_local_audio
     global ve_call
@@ -44,30 +42,29 @@ def main_loop():
         try:
             # wait for pin input
             choice = gpio.listen()
-            #log.syslog(log.LOG_INFO, choice)
 
             if choice == "women":
                 ve_call = make_call('sip:' + speedial['ext1'] +
                     '@' + sipcfg['srv'])
-                log.syslog(log.LOG_INFO,
+                logger(log_info,
                     "SCK Dialing ext1")
 
             if choice == "police":
                 ve_call = make_call('sip:' + speedial['ext3'] +
                     '@' + sipcfg['srv'])
-                log.syslog(log.LOG_INFO,
+                logger(log_info,
                     "SCK Dialing ext3")
 
             if choice == "cr":
                 ve_call = make_call('sip:' + speedial['ext4'] +
                     '@' + sipcfg['srv'])
-                log.syslog(log.LOG_INFO,
+                logger(log_info,
                     "SCK Dialing ext4")
 
             if choice == "fire":
                 ve_call = make_call('sip:' + speedial['ext5'] +
                     '@' + sipcfg['srv'])
-                log.syslog(log.LOG_INFO,
+                logger(log_info,
                     "SCK Dialing ext5")
 
             if (choice == "son") or (choice == "soff"):
@@ -98,11 +95,11 @@ def local_audio_toggle():
         # TODO Check if there is no ongoing call
         ve_local_audio = True
         lib.conf_connect(0, 0)
-        log.syslog(log.LOG_INFO, 'SCK Local Audio Enabled')
+        logger(log_info, 'SCK Local Audio Enabled')
     elif ve_local_audio == True:
         lib.conf_disconnect(0, 0)
         ve_local_audio = False
-        log.syslog(log.LOG_INFO, 'SCK Local Audio Disabled')
+        logger(log_info, 'SCK Local Audio Disabled')
 
 
 """ Callback for handling registration on PBX """
