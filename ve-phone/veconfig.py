@@ -71,26 +71,6 @@ def get_audiocfg():
     except:
         logger(log_err,"SCK Config Audio Error.")
 
-def get_ports():
-    try:
-        base_path = config.get('DEFAULT', 'basepath')
-        value_file = config.get('DEFAULT', 'valuefile')
-        direction_file = config.get('DEFAULT', 'directionfile')
-        speaker = config.get('features', 'altavoz')
-        strobe = config.get('features', 'strobo')
-        lock = config.get('features', 'chapa')
-        gear = config.get('features', 'equipo')
-        fak = config.get('features', 'botiquin')
-        footing = config.get('features', 'base')
-        key = config.get('features', 'llave')
-        button_1= config.get('features', 'boton1')
-        button_2 = config.get('features', 'boton2')
-        button_3 = config.get('features', 'boton3')
-        button_4 = config.get('features', 'boton4')
-        button_5 = config.get('features', 'boton5')
-    except:
-        logger(log_err, 'SCK GPIO Expansion Ports Config Error')
-
 
 try:
     config = ConfigParser.RawConfigParser()

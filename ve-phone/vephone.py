@@ -27,48 +27,60 @@ import vegpio as gpio
 #import vetone
 
 LOG_LEVEL = 3
+# Global variables
+ve_local_audio = False
+ve_call = None
+ve_tone = None
+ve_siren = None
+# pjsip library global variables
+lib = None
+current_call = None
+call_state = None
+
 # Logging callback
 def log_cb(level, str, len):
     logger(log_info,"PJSUA " + str),
-    logger(log_info, "SCK Ready!")
 
 
 def main_loop():
 
     global ve_local_audio
     global ve_call
+    ports = gpio.get_ports()
+    logger(log_info, "SCK Ready!")
 
     while True:
         try:
             # wait for pin input
             choice = gpio.listen()
+            print gpio.read_ports(ports)
 
-            if (choice == "women") and (ve_call is None):
-                ve_call = make_call('sip:' + speedial['ext1'] +
-                    '@' + sipcfg['srv'])
-                logger(log_info,
-                    "SCK Dialing ext1")
+            #if (choice == "women") and (ve_call is None):
+            #    ve_call = make_call('sip:' + speedial['ext1'] +
+            #        '@' + sipcfg['srv'])
+            #    logger(log_info,
+            #        "SCK Dialing ext1")
 
-            if (choice == "police") and (ve_call is None):
-                ve_call = make_call('sip:' + speedial['ext3'] +
-                    '@' + sipcfg['srv'])
-                logger(log_info,
-                    "SCK Dialing ext3")
+            #if (choice == "police") and (ve_call is None):
+            #    ve_call = make_call('sip:' + speedial['ext3'] +
+            #        '@' + sipcfg['srv'])
+            #    logger(log_info,
+            #        "SCK Dialing ext3")
 
-            if (choice == "cr") and (ve_call is None):
-                ve_call = make_call('sip:' + speedial['ext4'] +
-                    '@' + sipcfg['srv'])
-                logger(log_info,
-                    "SCK Dialing ext4")
+            #if (choice == "cr") and (ve_call is None):
+            #    ve_call = make_call('sip:' + speedial['ext4'] +
+            #        '@' + sipcfg['srv'])
+            #    logger(log_info,
+            #        "SCK Dialing ext4")
 
-            if (choice == "fire") and (ve_call is None):
-                ve_call = make_call('sip:' + speedial['ext5'] +
-                    '@' + sipcfg['srv'])
-                logger(log_info,
-                    "SCK Dialing ext5")
+            #if (choice == "fire") and (ve_call is None):
+            #    ve_call = make_call('sip:' + speedial['ext5'] +
+            #        '@' + sipcfg['srv'])
+            #    logger(log_info,
+            #        "SCK Dialing ext5")
 
-            if (choice == "son" or choice == "soff") and ve_call is None:
-                local_audio(choice)
+            #if (choice == "son" or choice == "soff") and ve_call is None:
+            #    local_audio(choice)
 
 
         except ValueError:
@@ -249,15 +261,11 @@ try:
                 pj.AccountConfig(sipcfg['srv'], sipcfg['ext'],
                     sipcfg['pwd'])
         )
-
     # Set the account call back
     acc_cb = VeAccountCallback(acc)
     acc.set_callback(acc_cb)
     acc_cb.wait()
-    # Global variables
-    ve_local_audio = False
-    ve_call = None
-    # main loop
+        # main loop
     main_loop()
     # We're done, shutdown the library
     lib.destroy()
