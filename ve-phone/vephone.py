@@ -53,38 +53,17 @@ def main_loop():
         try:
             # wait for pin input
             choice = gpio.listen()
-            port = gpio.read_ports(ports)
+            actions = gpio.read_ports(ports)
+            for action, parameter in actions.iteritems():
+                getattr(ve_action, action)()
 
             #if (choice == "women") and (ve_call is None):
             #    ve_call = make_call('sip:' + speedial['ext1'] +
             #        '@' + sipcfg['srv'])
             #    logger(log_info,
             #        "SCK Dialing ext1")
-
-            #if (choice == "police") and (ve_call is None):
-            #    ve_call = make_call('sip:' + speedial['ext3'] +
-            #        '@' + sipcfg['srv'])
-            #    logger(log_info,
-            #        "SCK Dialing ext3")
-
-            #if (choice == "cr") and (ve_call is None):
-            #    ve_call = make_call('sip:' + speedial['ext4'] +
-            #        '@' + sipcfg['srv'])
-            #    logger(log_info,
-            #        "SCK Dialing ext4")
-
-            #if (choice == "fire") and (ve_call is None):
-            #    ve_call = make_call('sip:' + speedial['ext5'] +
-            #        '@' + sipcfg['srv'])
-            #    logger(log_info,
-            #        "SCK Dialing ext5")
-
-            #if (choice == "son" or choice == "soff") and ve_call is None:
-            #    local_audio(choice)
-
-
         except ValueError:
-            logger(log_info,
+            logger(log_error,
                     "SCK Exception, this is weird!")
 
 	    continue
@@ -99,6 +78,30 @@ def make_call(uri):
     except pj.Error, e:
         logger(log_err, "SCK " + str(e))
         return None
+
+class VeAction():
+    def button_1(self):
+        logger(log_info, 'SCK B1')
+
+    def button_2(self):
+        logger(log_info, 'SCK B2')
+
+    def button_3(self):
+        logger(log_info, 'SCK B3')
+
+    def button_4(self):
+        logger(log_info, 'SCK B4')
+
+    def button_5(self):
+        logger(log_info, 'SCK B5')
+
+    def speaker(self):
+        logger(log_info, 'SCK Speaker')
+
+
+    """ Toggle local audio On and Off """
+    def local_audio(self):
+        logger(log_info, 'SCK Local Audio Disabled')
 
 
 """ Callback for handling registration on PBX """
@@ -236,7 +239,6 @@ try:
     transport = lib.create_transport(pj.TransportType.UDP)
     # Start the library
     lib.start()
-
     if sipcfg == None:
         # Create local/user-less account
         acc = lib.create_account_for_transport(transport)
@@ -250,7 +252,8 @@ try:
     acc_cb = VeAccountCallback(acc)
     acc.set_callback(acc_cb)
     acc_cb.wait()
-        # main loop
+    ve_action = VeAction()
+    # main loop
     main_loop()
     # We're done, shutdown the library
     lib.destroy()

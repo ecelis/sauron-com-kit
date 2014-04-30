@@ -38,12 +38,7 @@ def get_ports():
         config.readfp(open('exports.ini'))
         return dict([
             ('speaker', config.get('features', 'altavoz')),
-            ('strobe', config.get('features', 'strobo')),
-            ('lock', config.get('features', 'chapa')),
-            ('gear', config.get('features', 'equipo')),
-            ('fak', config.get('features', 'botiquin')),
-            ('footing', config.get('features', 'base')),
-            ('key', config.get('features', 'llave')),
+            ('local_audio', config.get('features', 'llave')),
             ('button_1', config.get('features', 'boton1')),
             ('button_2', config.get('features', 'boton2')),
             ('button_3', config.get('features', 'boton3')),
@@ -64,8 +59,8 @@ def _read_port_value(gpio_value):
 def read_ports(ports):
     port = {}
     try:
-        for key, value in ports.iteritems():
-            port[key] = _read_port_value(value + '/value')
+        for key, gpio in ports.iteritems():
+            port[key] = key, _read_port_value(gpio + '/value')
         return port
     except:
         logger(log_err, 'SCK GPIO Read Error')

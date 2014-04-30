@@ -15,23 +15,24 @@
 #import pyalsa.alsacard as acard
 #import pyalsa.alsamixer as amixer
 import sys
-import syslog
-#import veconfig
+from syslog import syslog as logger
+from syslog import LOG_INFO as log_info
+from syslog import LOG_ERR as log_err
 
-""" Toggle local audio On and Off """
-def local_audio(choice):
-    global ve_local_audio
-    if ve_local_audio == False and choice == "son":
-        # TODO Check if there is no ongoing call
-        os.system("/home/valkeye/valkeye/assets/bash/speaker-on")
-        ve_local_audio = True
-        lib.conf_connect(0, 0)
-        logger(log_info, 'SCK Local Audio Enabled')
-    elif ve_local_audio == True:
-        os.system("/home/valkeye/valkeye/assets/bash/speaker-off")
-        lib.conf_disconnect(0, 0)
-        ve_local_audio = False
-        logger(log_info, 'SCK Local Audio Disabled')
+def amplifier_on():
+    try:
+        os.system('/home/valkeye/valkeye/assets/bash/speaker-on')
+        logger(log_info, 'SCK Audio Amplifier ON')
+    except:
+        logger(log_err, 'SCK Error turning Audio Amplifier ON')
+
+
+def amplifier_off():
+    try:
+        os.system('/home/valkeye/valkeye/assets/bash/speaker-off')
+        logger(log_info, 'SCK Audio Amplifier OFF')
+    except:
+        logger(log_err, 'SCK Error turning Audio Amplifier OFF')
 
 
 #class VSS:
