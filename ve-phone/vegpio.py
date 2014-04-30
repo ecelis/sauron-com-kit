@@ -62,9 +62,11 @@ def _read_port_value(gpio_value):
 
 
 def read_ports(ports):
+    port = {}
     try:
         for key, value in ports.iteritems():
-            _read_port_value(value + '/value')
+            port[key] = _read_port_value(value + '/value')
+        return port
     except:
         logger(log_err, 'SCK GPIO Read Error')
         return None

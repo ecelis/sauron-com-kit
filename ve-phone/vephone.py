@@ -23,7 +23,7 @@ from syslog import LOG_INFO as log_info
 from syslog import LOG_ERR as log_err
 import veconfig as vc
 import vegpio as gpio
-#import vess
+import vess
 #import vetone
 
 LOG_LEVEL = 3
@@ -53,7 +53,7 @@ def main_loop():
         try:
             # wait for pin input
             choice = gpio.listen()
-            print gpio.read_ports(ports)
+            port = gpio.read_ports(ports)
 
             #if (choice == "women") and (ve_call is None):
             #    ve_call = make_call('sip:' + speedial['ext1'] +
@@ -99,21 +99,6 @@ def make_call(uri):
     except pj.Error, e:
         logger(log_err, "SCK " + str(e))
         return None
-
-""" Toggle local audio On and Off """
-def local_audio(choice):
-    global ve_local_audio
-    if ve_local_audio == False and choice == "son":
-        # TODO Check if there is no ongoing call
-        os.system("/home/valkeye/valkeye/assets/bash/speaker-on")
-        ve_local_audio = True
-        lib.conf_connect(0, 0)
-        logger(log_info, 'SCK Local Audio Enabled')
-    elif ve_local_audio == True:
-        os.system("/home/valkeye/valkeye/assets/bash/speaker-off")
-        lib.conf_disconnect(0, 0)
-        ve_local_audio = False
-        logger(log_info, 'SCK Local Audio Disabled')
 
 
 """ Callback for handling registration on PBX """
