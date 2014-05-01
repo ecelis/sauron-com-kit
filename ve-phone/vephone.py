@@ -121,13 +121,13 @@ class VeAction():
         global ve_call
         global ve_amp
         global lib
-        if state == 0 and (ve_amp == 0 or ve_amp is None):
+        if state == 1 and (ve_amp == 0 or ve_amp is None):
             # Toggle audio amplifier on
             ve_amp = vess.amplifier_on()
             # Connect system's audio capture to playback 
             # (allows for the local microphone connected to speakers)
             lib.conf_connect(0, 0)
-        elif state == 1 and ve_amp == 1:
+        elif state == 0 and ve_amp == 1:
             # Disconnects audio capture from playback
             lib.conf_disconnect(0, 0)
             # Toggle audio amplifier off
