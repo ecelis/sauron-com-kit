@@ -25,7 +25,6 @@ import vegpio as gpio
 
 LOG_LEVEL = 3
 # Global variables
-ve_local_audio = False
 ve_call = None
 ve_tone = None
 ve_siren = None
@@ -100,15 +99,22 @@ class VeAction():
 
     def speaker(self, state):
         #TODO I guess I won't need this
-        pass
-#        global ve_call
-#        global ve_amp
-#        if state == 0 and (ve_amp == 0 or ve_amp is None):
-#            ve_amp = vess.amplifier_on()
-#        elif state == 1 and ve_amp == 1:
-#            ve_amp = vess.amplifier_off()
-#        logger(log_info, 'SCK Speaker ' + str(ve_amp))
-
+        global ve_siren
+        global ve_amp
+        if state == 1 and (ve_amp == 0 or ve_amp is None) and ve_siren is None:
+            # Toggle audio amplifier on
+            ve_amp = vess.amplifier_on()
+            # Create a siren player
+            VeSound().siren()
+            # Connect the siren player to speakers
+            lib.conf_connect(ve_siren, 0)
+        elif state == 0 and ve_amp == 1 and ve_siren is not None:
+            # Toggle audio amplifier off
+            ve_amp = vess.amplifier_off()
+            # Disconnect siren from speakers
+            lib.conf_disconnect(ve_siren, 0)
+            # Dispose of the siren
+            ve_siren = None
 
     """ Toggle local audio On and Off """
     def local_audio(self, state):
@@ -116,6 +122,7 @@ class VeAction():
         global ve_amp
         global lib
         if state == 0 and (ve_amp == 0 or ve_amp is None):
+            # Toggle audio amplifier on
             ve_amp = vess.amplifier_on()
             # Connect system's audio capture to playback 
             # (allows for the local microphone connected to speakers)
@@ -123,7 +130,29 @@ class VeAction():
         elif state == 1 and ve_amp == 1:
             # Disconnects audio capture from playback
             lib.conf_disconnect(0, 0)
+            # Toggle audio amplifier off
             ve_amp = vess.amplifier_off()
+
+class VeSound:
+    def ring_start(self):
+        global lib
+        global tone
+        tone = lib.create_player(os.path.dirname(
+            os.path.realpath(__file__)) + "/sounds/tone.wav", True)
+
+    def incoming(self):
+        global lib
+        global tone
+        tone = lib.create_player(os.path.dirname(
+            os.path.realpath(__file__)) + "/sounds/three-tones.wav", False)
+
+    def siren(self):
+        global lib
+        global ve_siren
+        siren = lib.create_player(os.path.dirname(
+            os.path.realpath(__file__)) + '/sounds/siren.wav', False)
+        ve_siren = lib.player_get_slot(siren)
+
 
 
 """ Callback for handling registration on PBX """
@@ -192,26 +221,6 @@ class VeCallCallback(pj.CallCallback):
             call_slot = self.call.info().conf_slot
             lib.conf_connect(call_slot, 0)
             lib.conf_connect(0, call_slot)
-
-
-class VeTone:
-    def ring_start(self):
-        global tone
-        tone = lib.create_player(os.path.dirname(
-            os.path.realpath(__file__)) + "/sounds/tone.wav", True)
-        lib.conf_connect(tone, 0)
-        return tone
-
-    def ring_stop(self, tone):
-        lib.conf_disconnect(tone, 0)
-        lib.player_destroy(tone)
-
-    def incoming(self):
-        global tone
-        tone = lib.create_player(os.path.dirname(
-            os.path.realpath(__file__)) + "/sounds/three-tones.wav", False)
-        lib.conf_connect(tone, 0)
-        return tone
 
 
 try:
