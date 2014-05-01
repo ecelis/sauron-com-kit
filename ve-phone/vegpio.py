@@ -36,8 +36,9 @@ def get_ports():
     try:
         config = ConfigParser.ConfigParser()
         config.readfp(open('exports.ini'))
+        #TODO It could be a RawConfigParser to get the whole dictionary from cfg
         return dict([
-            ('speaker', config.get('features', 'altavoz')),
+            ('siren', config.get('features', 'sirena')),
             ('local_audio', config.get('features', 'llave')),
             ('button_1', config.get('features', 'boton1')),
             ('button_2', config.get('features', 'boton2')),
@@ -65,7 +66,3 @@ def read_ports(ports):
     except:
         logger(log_err, 'SCK GPIO Read Error')
         return None
-
-
-def listen():
-    pass

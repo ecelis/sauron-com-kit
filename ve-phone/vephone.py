@@ -97,7 +97,7 @@ class VeAction():
             ve_call = make_call('sip:' + speedial['ext5'] +
                 '@' + sipcfg['srv'])
 
-    def speaker(self, state):
+    def siren(self, state):
         #TODO I guess I won't need this
         global ve_siren
         global ve_amp
