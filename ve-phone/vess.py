@@ -21,18 +21,22 @@ from syslog import LOG_ERR as log_err
 
 def amplifier_on():
     try:
-        os.system('/home/valkeye/valkeye/assets/bash/speaker-on')
-        logger(log_info, 'SCK Audio Amplifier ON')
+        subprocess.call('/home/valkeye/valkeye/assets/bash/speaker-on')
+        logger(log_info, 'SCK Audio amplifier ON')
+        return 1
     except:
-        logger(log_err, 'SCK Error turning Audio Amplifier ON')
+        logger(log_err, 'SCK Error turning audio amplifier ON')
+        return None
 
 
 def amplifier_off():
     try:
-        os.system('/home/valkeye/valkeye/assets/bash/speaker-off')
-        logger(log_info, 'SCK Audio Amplifier OFF')
+        subprocess.call('/home/valkeye/valkeye/assets/bash/speaker-off')
+        logger(log_info, 'SCK Audio amplifier OFF')
+        return 0
     except:
-        logger(log_err, 'SCK Error turning Audio Amplifier OFF')
+        logger(log_err, 'SCK Error turning audio amplifier OFF')
+        return None
 
 
 #class VSS:
