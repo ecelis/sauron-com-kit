@@ -55,7 +55,7 @@ def main_loop():
             choice = gpio.listen()
             actions = gpio.read_ports(ports)
             for action, parameter in actions.iteritems():
-                getattr(ve_action, action)()
+                getattr(ve_action, action)(parameter[1])
 
             #if (choice == "women") and (ve_call is None):
             #    ve_call = make_call('sip:' + speedial['ext1'] +
@@ -80,28 +80,32 @@ def make_call(uri):
         return None
 
 class VeAction():
-    def button_1(self):
-        logger(log_info, 'SCK B1')
+    def button_1(self, state):
+        global ve_call
+        if state == '0':
+            ve_call = make_call('sip:' + speedial['ext1'] +
+                '@' + sipcfg['srv'])
+        logger(log_info, 'SCK B1 ' + state)
 
-    def button_2(self):
-        logger(log_info, 'SCK B2')
+    def button_2(self, state):
+        logger(log_info, 'SCK B2 ' + state)
 
-    def button_3(self):
-        logger(log_info, 'SCK B3')
+    def button_3(self, state):
+        logger(log_info, 'SCK B3 ' + state)
 
-    def button_4(self):
-        logger(log_info, 'SCK B4')
+    def button_4(self, state):
+        logger(log_info, 'SCK B4 ' + state)
 
-    def button_5(self):
-        logger(log_info, 'SCK B5')
+    def button_5(self, state):
+        logger(log_info, 'SCK B5 ' + state)
 
-    def speaker(self):
-        logger(log_info, 'SCK Speaker')
+    def speaker(self, state):
+        logger(log_info, 'SCK Speaker ' + state)
 
 
     """ Toggle local audio On and Off """
-    def local_audio(self):
-        logger(log_info, 'SCK Local Audio Disabled')
+    def local_audio(self, state):
+        logger(log_info, 'SCK Local Audio ' + state)
 
 
 """ Callback for handling registration on PBX """
