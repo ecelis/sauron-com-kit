@@ -101,16 +101,18 @@ class VeAction():
         #TODO I guess I won't need this
         global ve_siren
         global ve_amp
-        if state == 1 and (ve_amp == 0 or ve_amp is None) and ve_siren is None:
+        #if state == 0 and (ve_amp == 0 or ve_amp is None) and ve_siren is None:
+        if state == 0 and ve_siren is None:
             # Toggle audio amplifier on
-            ve_amp = vess.amplifier_on()
+            #ve_amp = vess.amplifier_on()
             # Create a siren player
             VeSound().siren()
             # Connect the siren player to speakers
             lib.conf_connect(ve_siren, 0)
-        elif state == 0 and ve_amp == 1 and ve_siren is not None:
+            #elif state == 1 and ve_amp == 1 and ve_siren is not None:
+        elif state == 1 and ve_siren is not None:
             # Toggle audio amplifier off
-            ve_amp = vess.amplifier_off()
+            #ve_amp = vess.amplifier_off()
             # Disconnect siren from speakers
             lib.conf_disconnect(ve_siren, 0)
             # Dispose of the siren

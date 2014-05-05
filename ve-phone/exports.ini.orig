@@ -30,8 +30,8 @@ valuefile:value
 13:%(basepath)s/gpio10_pg10
 14:%(basepath)s/gpio11_pg11
 [features]
-sirena:%(11)s
-llave:/home/valkeye/sauron-com-kit/ve-phone/state/siren
+sirena:/home/valkeye/sauron-com-kit/ve-phone/state/siren
+llave:%(14)s
 boton1:%(6)s
 boton2:%(8)s
 boton3:%(10)s
