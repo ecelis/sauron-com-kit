@@ -47,7 +47,8 @@ def main_loop():
         try:
             actions = gpio.read_ports(ports)
             for action, parameter in actions.iteritems():
-                getattr(ve_action, action)(int(parameter[1]))
+                if parameter[1] is not None:
+                    getattr(ve_action, action)(int(parameter[1]))
 
         except ValueError:
             logger(log_error, 'SCK Exception, this is weird!')
@@ -102,7 +103,7 @@ class VeAction():
         global ve_siren
         global ve_amp
         #if state == 0 and (ve_amp == 0 or ve_amp is None) and ve_siren is None:
-        if state == 0 and ve_siren is None:
+        if state == 1 and ve_siren is None:
             # Toggle audio amplifier on
             #ve_amp = vess.amplifier_on()
             # Create a siren player
@@ -110,7 +111,7 @@ class VeAction():
             # Connect the siren player to speakers
             lib.conf_connect(ve_siren, 0)
             #elif state == 1 and ve_amp == 1 and ve_siren is not None:
-        elif state == 1 and ve_siren is not None:
+        elif state == 0 and ve_siren is not None:
             # Toggle audio amplifier off
             #ve_amp = vess.amplifier_off()
             # Disconnect siren from speakers
