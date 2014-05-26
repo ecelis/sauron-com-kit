@@ -32,7 +32,7 @@ def get_sipcfg():
 
     except:
         logger(log_err,
-                "SCK SIP Account Error," + ext + "@" + srv)
+                "SCK Error while reading SIP Auth Credentials")
 
 
 def get_speedial():

@@ -23,7 +23,7 @@ from syslog import LOG_INFO as log_info
 from syslog import LOG_ERR as log_err
 import asgetch as gc
 import veconfig as vc
-import vegpio as gpio
+#import vegpio as gpio
 #import vess
 #import vetone
 
