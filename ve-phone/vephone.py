@@ -247,7 +247,7 @@ try:
     # Init pjsua with default config
     lib.init(log_cfg = pj.LogConfig(level=LOG_LEVEL, callback=log_cb))
     # Set sound device TODO in vc.py
-    lib.set_snd_dev(0,0)
+    #lib.set_snd_dev(0,0)
     # Create UDP transport which listens to any available port
     transport = lib.create_transport(pj.TransportType.UDP)
     # Start the library
