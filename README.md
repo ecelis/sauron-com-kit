@@ -1,3 +1,13 @@
+DEPRECATED REPOSITORY
+=====================
+
+The code was moved to https://github.com/ecelis/sck
+---------------------------------------------------
+
+Due to code clean up and merge of the branches this repository has been
+deprecated and kept only for historic purposes. DON'T USE IT!
+
+
 Sauron-OS Communications Kit
 ============================
 
